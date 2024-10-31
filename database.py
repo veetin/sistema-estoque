@@ -1,4 +1,6 @@
 import sqlite3
+import asyncio
+from telegram.tgbot_lib import enviar_mensagem
 
 def conectar_db():
     conector = sqlite3.connect('estoque.db')
@@ -57,6 +59,20 @@ async def obter_produto(produto_id):
     conector.close()
     return produto
 
+async def ver_estoque(chat_id):
+    conector = conectar_db()
+    cursor = conector.cursor()
+    cursor.execute("""
+    SELECT * FROM produtos
+    """)
+    produtos = cursor.fetchall()
+    conector.close()
+
+
+    return produtos
+
 if __name__ == "__main__":
-    produto = obter_produto(1)
-    print(produto)
+    asyncio.run(adicionar_produto('Notebook', 12, 2500.00))
+
+
+

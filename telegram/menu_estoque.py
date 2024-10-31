@@ -95,7 +95,6 @@ async def menu_editar_estoque(chat_id, message_id):
             'reply_markup': inline_keyboard
         }
 
-        print('teste')
         # Faz a requisição para editar a mensagem com o novo teclado
         async with httpx.AsyncClient() as client:
             await client.post(f'https://api.telegram.org/bot{BOT_TOKEN}/editMessageText', json=payload)

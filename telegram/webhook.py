@@ -4,8 +4,7 @@ import uvicorn
 from loguru import logger
 from menu_estoque import menu_estoque
 from verificar_comando import verificar_comando
-from menu_estoque import menu_editar_estoque
-from tgbot_lib import confirmar_callback
+from processar_callback import processar_callback
 
 app = FastAPI()
 
@@ -28,29 +27,11 @@ async def webhook(request: Request):
                 await menu_estoque(chat_id)
                 
         elif 'callback_query' in data:
-            logger.info('callback')
-
-            callback_data = data['callback_query']
-
-            # armazenando o id do chat
-            chat_id = str(callback_data['message']['chat']['id'])
-
-            comando = callback_data['data']
-
-            callback_id = callback_data['id']
-
-            if await confirmar_callback(callback_id=callback_id):
-
-                if comando == 'menu_editar_estoque':
-                    message_id = callback_data['message']['message_id']
-                    await menu_editar_estoque(chat_id, message_id)
-                
-                elif comando == 'voltar_menu_estoque':
-                    message_id = callback_data['message']['message_id']
-                    await menu_estoque(chat_id, callback=True, message_id=message_id)
+        
+            chat_id = str(data['callback_query']['message']['chat']['id'])
+            await processar_callback(data, chat_id)
                     
-            
-    
+        
     except Exception as e:
         logger.error({
                 'status:': 'falha ao processar os dados',
