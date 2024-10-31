@@ -19,8 +19,8 @@ async def menu_estoque(chat_id):
                 'inline_keyboard': [
                     [
                         {
-                            'text': 'Procurar Produto',  # Texto do botão "Ordem Aberta"
-                            'callback_data':'menu_procurar_produto',  # Dado enviado quando o botão é clicado
+                            'text': 'Procurar no estoque',  # Texto do botão "Ordem Aberta"
+                            'callback_data':'menu_procurar_estoque',  # Dado enviado quando o botão é clicado
                         },
                         
                         {

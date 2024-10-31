@@ -1,12 +1,10 @@
 import sqlite3
 
-
-
 def conectar_db():
     conector = sqlite3.connect('estoque.db')
     return conector
 
-async def criar_tabela():
+def criar_tabela():
     
     # Comando SQL para criar a tabela de produtos
     conector = conectar_db()
