@@ -43,7 +43,11 @@ async def webhook(request: Request):
 
                 if comando == 'menu_editar_estoque':
                     message_id = callback_data['message']['message_id']
-                    await menu_atualizar_estoque(chat_id, message_id)
+                    await menu_editar_estoque(chat_id, message_id)
+                
+                elif comando == 'voltar_menu_estoque':
+                    message_id = callback_data['message']['message_id']
+                    await menu_estoque(chat_id, callback=True, message_id=message_id)
                     
             
     
