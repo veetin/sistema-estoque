@@ -6,8 +6,6 @@ Professor: Marcelo Campinhos
 
 Alunos: 
 
----
-
 ## 1. Identificação do Problema (Engenharia de Requisitos e Gestão)
 
 ### **Identificação do Problema:**
