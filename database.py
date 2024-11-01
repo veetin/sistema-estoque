@@ -48,13 +48,13 @@ async def atualizar_quantidade_produto(produto_id, quantidade):
     conector.commit()
     conector.close()
 
-async def obter_produto(produto_id):
+async def procurar_estoque(produto, chat_id):
     conector = conectar_db()
     cursor = conector.cursor()
     cursor.execute("""
     SELECT * FROM produtos
-    WHERE id = ?
-    """, (produto_id,))
+    WHERE Nome = ?
+    """, (produto,))
     produto = cursor.fetchone()
     conector.close()
     return produto
@@ -68,11 +68,37 @@ async def ver_estoque(chat_id):
     produtos = cursor.fetchall()
     conector.close()
 
+    text = '---------------------------\n*ESTOQUE*\n--------------------------- \n'
+
+    for produto in produtos:
+        text_prod = f"""Id: {produto[0]}
+Nome: {produto[1]}
+Quantidade: {produto[2]}
+Valor: {produto[3]}
+---------------------------
+"""
+        text+=text_prod
+    
+    print(text)
+    await enviar_mensagem(chat_id=chat_id, text=text)
 
     return produtos
 
+
+async def deletar_produto(id):
+    conector = conectar_db()
+    cursor = conector.cursor()
+    cursor.execute("""
+    DELETE FROM produtos
+    WHERE id = ?
+    """, (id,))
+    conector.commit()
+    conector.close()
+
+
+
 if __name__ == "__main__":
-    asyncio.run(adicionar_produto('Notebook', 12, 2500.00))
+    asyncio.run(deletar_produto(2))
 
 
 

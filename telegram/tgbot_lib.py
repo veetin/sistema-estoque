@@ -89,6 +89,7 @@ async def atualizar_mensagem(text: str, chat_id: str, mensagem_id: str, parse_mo
 
 async def confirmar_callback(callback_id: str):
     try:
+        print(BOT_TOKEN)
         endpoint = f'{TELEGRAM_API_URL}/answerCallbackQuery'
         response = httpx.post(url=endpoint, data={
         'callback_query_id': callback_id

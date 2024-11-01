@@ -1,6 +1,7 @@
 from loguru import logger
 from menu_estoque import menu_editar_estoque, menu_estoque
-from tgbot_lib import confirmar_callback
+from database import procurar_estoque
+from tgbot_lib import confirmar_callback, enviar_mensagem
 import sys
 import os
 
@@ -28,8 +29,16 @@ async def processar_callback(data: dict, chat_id):
                 await menu_estoque(chat_id, callback=True, message_id=message_id)
             
             elif botao == 'menu_ver_estoque':
-                produtos = await ver_estoque()
-                print(produtos)
+                produtos = await ver_estoque(chat_id)
+                print(produtos[1][1])
+            
+            elif botao == 'menu_procurar_estoque':
+                text = 'Informe no nome do produto:'
+                await enviar_mensagem(chat_id=chat_id, text=text)
+
+                # lista_procurar_estoque.append()
+                
+                await procurar_estoque(chat_id)
     
     except Exception as e:
         logger.error({
