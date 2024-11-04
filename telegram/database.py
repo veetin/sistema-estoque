@@ -1,5 +1,6 @@
 import sqlite3
 import asyncio
+from os import getenv
 from tgbot_lib import enviar_mensagem
 
 def conectar_db():
@@ -48,13 +49,13 @@ async def atualizar_quantidade_produto(produto_id, quantidade):
     conector.commit()
     conector.close()
 
-async def procurar_estoque(produto, chat_id):
+async def procurar_estoque(produto: str, chat_id):
     conector = conectar_db()
     cursor = conector.cursor()
     cursor.execute("""
     SELECT * FROM produtos
     WHERE Nome = ?
-    """, (produto,))
+    """, (produto.title(),))
     info_produto = cursor.fetchone()
     conector.close()
 
@@ -110,7 +111,7 @@ async def deletar_produto(id):
     conector.commit()
     conector.close()
 
-async def verificar_estoque(chat_id, id):
+async def verificar_estoque(id, chat_id = None):
     conector = conectar_db()
     cursor = conector.cursor()
     cursor.execute("""
@@ -120,22 +121,25 @@ async def verificar_estoque(chat_id, id):
     produto = cursor.fetchone()
     conector.close()
 
+    if chat_id:
+        if produto[1] <= 5:
+            titulo_text = "Alerta - Estoque baixo!\n"
+
+            if produto[1] <= 3:
+                titulo_text = "Crítico - Estoque quase no fim!\n"
+
+            text = f"""
+Produto: {produto[0]}
+Quantidade: {produto[1]}
+        """
+
+            text = titulo_text+text
+
+            await enviar_mensagem(text, chat_id)
+
+    return produto
 
 
-    if produto <= 5:
-        titulo_text = "Alerta - Estoque baixo!\n\n"
-
-        if produto < 3:
-            titulo_text = "Alerta - Estoque baixo!\n\n"
-
-        text = f"""
-    Produto: {produto[0]}
-    Quantidade: {produto[1]}
-    """
-
-        text = titulo_text+text
-
-        await enviar_mensagem(text, chat_id)
 # funções de comandos
 
 async def add_comando(chat_id, comando):
@@ -185,8 +189,13 @@ async def apagar_comando(chat_id):
     conector.close()
 
 if __name__ == "__main__":
-    # asyncio.run(add_comando_msg('1993096908', 'test'))
-    asyncio.run(apagar_comando('1993096908'))
+    chat_id = getenv('chat_id')
+    # asyncio.run(add_comando_msg(chat_id, 'test'))
+    # asyncio.run(apagar_comando('chat_id'))
+    # asyncio.run(deletar_produto('1'))
+    asyncio.run(atualizar_quantidade_produto('3', 10))
+    asyncio.run(atualizar_quantidade_produto('4', 10))
+    asyncio.run(atualizar_quantidade_produto('5', 10))
     # criar_tabela()
 
 
