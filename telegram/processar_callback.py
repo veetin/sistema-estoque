@@ -1,13 +1,8 @@
 from loguru import logger
 from menu_estoque import menu_editar_estoque, menu_estoque
-from database import procurar_estoque
+from database import procurar_estoque, ver_estoque, add_comando
 from tgbot_lib import confirmar_callback, enviar_mensagem
-import sys
-import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from database import ver_estoque
 
 async def processar_callback(data: dict, chat_id):
     try:
@@ -33,12 +28,10 @@ async def processar_callback(data: dict, chat_id):
                 print(produtos[1][1])
             
             elif botao == 'menu_procurar_estoque':
+                await add_comando(chat_id, botao)
                 text = 'Informe no nome do produto:'
                 await enviar_mensagem(chat_id=chat_id, text=text)
-
-                # lista_procurar_estoque.append()
                 
-                await procurar_estoque(chat_id)
     
     except Exception as e:
         logger.error({

@@ -62,7 +62,6 @@ async def menu_estoque(chat_id, callback = False, message_id = None):
     except Exception as e:
         logger.error(f"Falha ao enviar menu do estoque\nerror: {e}")
 
-
 async def menu_editar_estoque(chat_id, message_id):
     try:
         # Define o novo teclado inline para a opção "Atualizar Estoque"
@@ -101,5 +100,3 @@ async def menu_editar_estoque(chat_id, message_id):
 
     except Exception as e:
         logger.error(f"Erro ao atualizar o menu do estoque\nerror: {e}")
-
-

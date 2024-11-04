@@ -1,10 +1,9 @@
 from http import HTTPStatus
 from fastapi import FastAPI, HTTPException, Request
-import uvicorn
 from loguru import logger
 from menu_estoque import menu_estoque
-from verificar_comando import verificar_comando
-from processar_callback import processar_callback
+from verificar_mensagem import verificar_mensagem
+import processar_callback
 
 app = FastAPI()
 
@@ -16,11 +15,11 @@ async def webhook(request: Request):
         data = await request.json()
         logger.info(data)
 
-        comando = await verificar_comando(data)
+        comando = await verificar_mensagem(data)
         
         if comando:
             
-            chat_id = str(data['message']['chat']['id'])
+            chat_id = str(data['message']['chat']['id']) 
             
             # comando para exibir o menu
             if  comando == '/menu':
@@ -29,7 +28,7 @@ async def webhook(request: Request):
         elif 'callback_query' in data:
         
             chat_id = str(data['callback_query']['message']['chat']['id'])
-            await processar_callback(data, chat_id)
+            await processar_callback.processar_callback(data, chat_id)
                     
         
     except Exception as e:
