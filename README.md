@@ -4,7 +4,7 @@
 
 Professor: Marcelo Campinhos
 
-Alunos: 
+Alunos: André Fischer | Gladson Rosa |  Lucas Dalla |  Pedro Nali |  Roberto Felipe |  Victor Barros
 
 ## 1. Identificação do Problema (Engenharia de Requisitos e Gestão)
 
